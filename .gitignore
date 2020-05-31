@@ -4,3 +4,4 @@ dbmigration/etc/config
 project/target/
 dbmigration/target/
 *.iml
+.DS_Store

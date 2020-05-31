@@ -1,0 +1,1 @@
+ALTER ROLE ${flyway:user} IN DATABASE ${financedb} set search_path = finance,public

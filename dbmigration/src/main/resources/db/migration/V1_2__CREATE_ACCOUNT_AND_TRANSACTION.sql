@@ -1,0 +1,36 @@
+ALTER TABLE account_book
+    ADD COLUMN "CURRENCY" character(4) COLLATE pg_catalog."C.UTF-8" NOT NULL;
+
+COMMENT ON COLUMN account_book."CURRENCY"
+    IS 'Three letter code of this account''s currency. Example: USD, EUR.';
+
+ALTER TABLE account_book
+    ADD COLUMN "PARENT" integer;
+ALTER TABLE account_book
+    ADD CONSTRAINT "FK_PARENT_ACCOUNT" FOREIGN KEY ("PARENT")
+    REFERENCES account_book ("ID") MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+CREATE TABLE TRANSACTIONS
+(
+    "TRANID" bigserial,
+    "TRAN_TIMESTAMP" timestamp with time zone,
+    "HASH" character varying(127),
+    "DESCRIPTION" character varying(252),
+    "FLAGS" integer,
+    CONSTRAINT "PK_TRANSACTION" PRIMARY KEY ("TRANID"),
+    CONSTRAINT "UK_TRANSACTION_HASH" UNIQUE ("HASH")
+);
+
+CREATE TABLE ACCOUNT_ENTRIES
+(
+    "TRANID" bigint not null,
+    "ACCOUNT_ID" INTEGER not null,
+    "VALUE" NUMERIC(15,3),
+    "FLAGS" integer,
+    CONSTRAINT "PK_ACCOUNT_ENTRIES" PRIMARY KEY ("TRANID", "ACCOUNT_ID"),
+    CONSTRAINT "FK_ENTRY_TRANSACTION" FOREIGN KEY ("TRANID") REFERENCES TRANSACTIONS("TRANID"),
+    CONSTRAINT "FK_ENTRY_ACCT_BOOK" FOREIGN KEY ("ACCOUNT_ID") REFERENCES ACCOUNT_BOOK("ID")
+);
+
