@@ -13,3 +13,6 @@ Therefore you must create your own config files by replacing with your own confi
 If you will migrate data unto a local instance of postgre you can just use 
 `flyway.url=jdbc:postgresql://localhost:5432/${finance.dbname}` pretty much ignoring all of 
 all of the `conn.` properties. As long as you have `flyway.user` and `flyway.password set.
+
+If the configuration is correct all that is needed is to run:
+`mvn clean properties:read-project-properties package flyway:migrate`.
