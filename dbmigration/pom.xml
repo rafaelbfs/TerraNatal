@@ -14,9 +14,6 @@
     <!-- The configuration of the development profile -->
     <profile>
       <id>development</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
       <properties>
         <build.profile.id>development</build.profile.id>
       </properties>
@@ -27,6 +24,15 @@
       <properties>
         <build.profile.id>production</build.profile.id>
       </properties>
+    </profile>
+    <profile>
+      <id>local</id>
+      <properties>
+        <build.profile.id>local</build.profile.id>
+      </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
     </profile>
   </profiles>
 

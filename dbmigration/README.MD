@@ -15,4 +15,7 @@ If you will migrate data unto a local instance of postgre you can just use
 all of the `conn.` properties. As long as you have `flyway.user` and `flyway.password set.
 
 If the configuration is correct all that is needed is to run:
-`mvn clean properties:read-project-properties package flyway:migrate`.
+`mvn clean properties:read-project-properties package flyway:migrate`
+
+Use `-P <profile-name>`to specify a different build profile.
+`mvn clean properties:read-project-properties package flyway:migrate -P local`
