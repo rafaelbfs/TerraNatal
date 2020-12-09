@@ -1,5 +1,7 @@
 --- GRANT PRIVILEGES TO APPUSER
 
+--CREATE SCHEMA ${flyway:defaultSchema} AUTHORIZATION postgres;
+
 GRANT ALL ON SCHEMA ${flyway:defaultSchema} TO ${appuser} WITH GRANT OPTION;
 
 ALTER DEFAULT PRIVILEGES IN SCHEMA ${flyway:defaultSchema}
@@ -14,22 +16,28 @@ GRANT EXECUTE ON FUNCTIONS TO ${appuser} WITH GRANT OPTION;
 ALTER DEFAULT PRIVILEGES IN SCHEMA ${flyway:defaultSchema}
 GRANT USAGE ON TYPES TO ${appuser} WITH GRANT OPTION;
 
-
--- CREATE ACCOUNT_BOOK TABLE
-
-CREATE TABLE ACCOUNT_BOOK
+CREATE TABLE ${flyway:defaultSchema}.ACCOUNT_CHART
 (
     "ID" serial,
-    "CODE" character varying(15) NOT NULL,
-    "JURISDICTION" character varying(15),
-    "NAME" character varying(63),
+    "STANDARD" character varying(23),
+    "COUNTRY_CODE" character(4),
     "DESCRIPTION" character varying(127),
-    "SEQUENCE_NR" integer DEFAULT 0,
     "FLAGS" integer,
-    CONSTRAINT "PK_ACCOUNT_BOOK" PRIMARY KEY ("ID"),
-    CONSTRAINT "UK_ACCOUNT_BOOK_CODE_JURISDICTION" UNIQUE ("CODE", "JURISDICTION")
-)
+    CONSTRAINT "PK_CHARTS" PRIMARY KEY ("ID")
+);
 
-TABLESPACE pg_default;
+-- CREATE ACCOUNT TABLE
 
-ALTER TABLE ACCOUNT_BOOK OWNER to ${flyway:user};
+CREATE TABLE ${flyway:defaultSchema}.ACCOUNT
+(
+    "ID" serial,
+    "CHART" integer,
+    "CODE" character varying(15) NOT NULL,
+    "NAME" character varying(127),
+    "DESCRIPTION" character varying(255),
+    "FLAGS" integer,
+    CONSTRAINT "PK_ACCOUNT" PRIMARY KEY ("ID"),
+    CONSTRAINT "FK_ACCTS_CHART" FOREIGN KEY ("CHART") REFERENCES ACCOUNT_CHART("ID")
+);
+
+
